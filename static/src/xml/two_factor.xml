@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<template id="assets_backend" name="single_login assets" inherit_id="web.assets_backend">
+	<xpath expr="." position="inside">
+		<link rel="stylesheet" href="/two_factor_auth/static/src/css/base.css"/>
+		<script type="text/javascript" src="/two_factor_auth/static/src/js/tfa.js"></script>
+	</xpath>
+</template>
+
+</data>
+</openerp>

@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+.openerp .oe_login .oe_two_factor_pane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -160px -166px;
+  border: solid 1px #333333;
+  background: #1e1e1e;
+  background: rgba(30, 30, 30, 0.94);
+  padding: 22px 32px;
+  color: #eeeeee;
+  text-align: left;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -moz-box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+  -webkit-box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+}
+.openerp .oe_login .oe_two_factor_pane h2 {
+  margin-top: 0;
+  font-size: 18px;
+}

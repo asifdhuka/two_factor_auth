@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="two_factor_auth.tauth_login" name="TwoFactorAuth">
+			<t t-name= "tauth_login" t-call="web.login_layout">
+			<form class="oe_two_factor_pane" role="form" t-attf-action="/web/tauth_login/verify{{ '?debug' if debug else '' }}" method="post" onsubmit="this.action = this.action + location.hash">
+
+                <t t-call="web.database_select"/>
+				<p> <![CDATA[ <br /> ]]></p>
+				<p> <![CDATA[ <br /> ]]></p>
+				<p> <![CDATA[ <br /> ]]></p>
+				<p> <![CDATA[ <br /> ]]></p>
+				<p> <![CDATA[ <br /> ]]></p>
+            	<p class="alert alert-success" t-if="message">
+                    <t t-esc="message"/>
+                </p>
+                <div class="form-group field-login">
+                    <label for="unique_code" class="control-label">Enter Secret Code</label>
+                    <input type="text" name="unique_code" t-att-value="unique_code" id="unique_code" class="form-control" autofocus="autofocus"/>
+                    <input type="checkbox" name="lost_mobile" t-att-value="lost_mobile" id="lost_mobile" />
+                    <label for="lost_mobile" class="control-label">Lost Mobile</label>
+                </div>
+                <p class="alert alert-danger" t-if="error">
+                    <t t-esc="error"/>
+                </p>                
+
+                <input type="hidden" name="redirect" t-att-value="redirect"/>
+                <input type="hidden" name="f1" t-att-value="f1"/>
+                <input type="hidden" name="f2" t-att-value="f2"/>
+                <input type="hidden" name="f3" t-att-value="f3"/>
+				<input type="hidden" name="l1" t-att-value="l1"/>
+				<input type="hidden" name="l2" t-att-value="l2"/>
+				<input type="hidden" name="l3" t-att-value="l3"/>
+
+                <div class="clearfix oe_login_buttons">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </div>
+		    </form>
+		</t>
+		</template>
+	</data>
+</openerp>

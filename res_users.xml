@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!--    Users Form View Extended -->
+		<record model="ir.ui.view" id="res_users_inherit1">
+			<field name="name">res.users.inherit1</field>
+			<field name="model">res.users</field>
+			<field name="inherit_id" ref="base.view_users_form" />
+			<field name="arch" type="xml">
+				<notebook position="inside">
+					<page string="Two Factor Authentication">
+						<group>
+							<group>
+								<field name="two_factor_authentication" on_change="onchange_clear_secret_key(two_factor_authentication)" />
+								<field name="secret_key" attrs="{'invisible': [('two_factor_authentication','=',False)], 'required':[('two_factor_authentication','=',True)]}" />
+								<div>
+									<button name="send_secret_key" attrs="{'invisible':[('two_factor_authentication', '=', False)]}" string="Send Secret Key By Email" type="object" />
+								</div>
+							</group>
+							<group>
+								<field name="qr_code_template_id" attrs="{'invisible': [('two_factor_authentication','=',False)], 'required':[('two_factor_authentication','=',True)]}" />
+								<field name="otp_template_id" attrs="{'invisible': [('two_factor_authentication','=',False)], 'required':[('two_factor_authentication','=',True)]}" />
+							</group>
+						</group>
+					</page>
+				</notebook>
+			</field>
+		</record>
+	</data>
+
+
+	<data noupdate="1">
+		<record id="email_qr_code" model="email.template">
+			<field name="name">Send QR code</field>
+			<field name="email_from">
+				<![CDATA[${object.company_id.name} <${(object.company_id.email or user.email)|safe}>]]></field>
+			<field name="subject"> <![CDATA[${object.company_id.name|safe}]]> Send QR Code</field>
+			<field name="model_id" ref="base.model_res_users"/>
+			<field name="auto_delete" eval="True"/>
+			<!-- <field name="email_recipients">${object.partner_id.email}</field> -->
+			<field name="email_to">${object.email|safe}</field>
+			<field name="body_html">
+				<![CDATA[<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+				<p>A QR code has been generated for the Odoo account linked to this email.</p>
+
+				<p>Follow <a href="${object.get_secret_key_url()}">this link</a> and scan the QR code into your Google authenticator app.</p>
+
+				<p>Note: If you do not expect this, you can safely ignore this email.</p>
+			</div>]]>
+</field>
+	</record>
+</data>
+
+<data noupdate="1">
+	<record id="email_otp_code" model="email.template">
+		<field name="name">Send OTP</field>
+		<field name="email_from">
+			<![CDATA[${object.company_id.name} <${(object.company_id.email or user.email)|safe}>]]></field>
+		<field name="subject"> <![CDATA[${object.company_id.name|safe}]]> Send OTP</field>
+		<field name="model_id" ref="base.model_res_users"/>
+		<field name="auto_delete" eval="True"/>
+		<!-- <field name="email_recipients">${object.partner_id.email}</field> -->
+		<field name="email_to">${object.email|safe}</field>
+		<field name="body_html">
+			<![CDATA[<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+			<p>A One Time Password has been generated for the Odoo account linked to this email is ${object.otp}.</p>
+
+			<p>This OTP is active for next 5 minutes.</p>
+
+			<p>Note: If you do not expect this, you can safely ignore this email.</p>
+		</div>]]>
+      </field>
+</record>
+</data>
+
+<data noupdate="1">
+<record model="ir.cron" id="purge_otp_time">
+	<field name="name">Purge OTP</field>
+	<field name="interval_number">5</field>
+	<field name="interval_type">minutes</field>
+	<field name="numbercall">-1</field>
+	<field name="doall" eval="False"/>
+	<field name="model" eval="'res.users'"/>
+	<field name="function" eval="'purge_otp'"/>
+	<field name="args" eval="'()'" />
+	<field name="active" eval="True"/>
+</record>
+</data>
+</openerp>
